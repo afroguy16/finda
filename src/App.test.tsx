@@ -1,9 +1,12 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, cleanup } from '@testing-library/react';
+import App from "./App";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+describe('Tag', () => {
+  const { baseElement } = render(<App />)
+
+    afterAll(cleanup);
+
+    it('should render successfully', () => {
+        expect(baseElement).toBeTruthy()
+    });
+})
