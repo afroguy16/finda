@@ -1,9 +1,9 @@
 import { UserT } from '../../types/user'
-import styles from './tag.module.css'
+import styles from './user.module.scss'
 
 type Props = Omit<UserT, 'id'>
 
-const Tag = (props: Props) => {
+const User = (props: Props) => {
   const { login, avatar_url, type } = props
 
   return (
@@ -19,4 +19,4 @@ const Tag = (props: Props) => {
   )
 }
 
-export default Tag
+export default User
