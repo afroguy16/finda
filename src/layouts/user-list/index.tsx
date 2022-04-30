@@ -4,10 +4,11 @@ import styles from "./user.module.scss";
 
 type Props = {
   users: UserT[];
+  emptyMessage: string;
 };
 
 const UserList = (props: Props) => {
-  const { users } = props;
+  const { users, emptyMessage } = props;
 
   const getUserElements = (users: Array<UserT>) =>
     users.map((user) => (
@@ -26,7 +27,7 @@ const UserList = (props: Props) => {
         {users && users.length > 0 ? (
           getUserElements(users)
         ) : (
-          <p>No user found</p>
+          <p>{emptyMessage}</p>
         )}
       </ul>
     </div>
