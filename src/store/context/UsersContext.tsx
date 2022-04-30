@@ -1,4 +1,4 @@
-import { createContext, FC, ReactNode, useContext, useReducer } from "react";
+import { createContext, ReactNode, useContext, useReducer } from "react";
 import { UsersPayloadT } from "../../types/user";
 import { UsersActionsE } from "../enums/users-actions";
 import usersReducer, { initialState } from "../reducer/usersReducer";

@@ -11,6 +11,7 @@ describe("useFetchUsers", () => {
 
   afterEach(cleanup);
 
+  // This test doesn't provide any real value.. it's just a demo of what a hook test could look like
   it("should return a Promise of UserResponseT if it receives a successful Response from call", async () => {
     const fakeResponse = await Promise.resolve(usersResponse)
     mockedAxios.get.mockResolvedValue(usersResponse);
