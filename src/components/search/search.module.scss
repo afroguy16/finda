@@ -1,0 +1,9 @@
+@import '../../variables.scss';
+
+.wrapper {
+    border-radius: 40px;
+    padding: 24px 27px;
+    background-color: $gray;
+    border: none;
+    font-size: $baseFontSize;
+}

@@ -1,4 +1,4 @@
-import { render, cleanup } from "@testing-library/react";
+import { render, cleanup, screen } from "@testing-library/react";
 import Home from ".";
 
 describe("User", () => {
@@ -13,5 +13,10 @@ describe("User", () => {
 
   it("should render successfully", () => {
     expect(baseElement).toBeTruthy();
+  });
+
+  it("should render a welcome text and search box", () => {
+    const searchBox = (screen.getByRole('textbox'))
+    expect(searchBox).toBeTruthy();
   });
 });

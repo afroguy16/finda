@@ -1,0 +1,12 @@
+.wrapper {
+    padding: 100px;
+}
+
+.search {
+    display: flex;
+    justify-content: center;
+    & > * {
+        width: 35%;
+        min-width: 300px;
+    }
+}
