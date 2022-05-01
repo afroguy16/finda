@@ -3,8 +3,6 @@ import UserList from ".";
 import { users } from "../../mocks/users";
 import { UserT } from "../../types/user";
 
-const FAKE_EMPTY_MESSAGE = 'Dummy fake message'
-
 describe("User List", () => {
   let baseElement: HTMLElement;
   const fakeUsers: Array<UserT> = [ ...users ];
@@ -13,7 +11,7 @@ describe("User List", () => {
 
   beforeEach(() => {
     const utils = render(
-      <UserList emptyMessage={FAKE_EMPTY_MESSAGE} users={fakeUsers} />
+      <UserList users={fakeUsers} />
     );
     baseElement = utils.baseElement;
   });
@@ -31,22 +29,16 @@ describe("User List", () => {
   });
 });
 
-describe("User List without Users", () => {
-  let baseElement: HTMLElement;
-  const fakeUsers: Array<UserT> = [];
+// describe("User List without Users", () => {
+//   let baseElement: HTMLElement;
+//   const fakeUsers: Array<UserT> = [];
 
-  afterEach(cleanup);
+//   afterEach(cleanup);
 
-  beforeEach(() => {
-    const utils = render(
-      <UserList emptyMessage={FAKE_EMPTY_MESSAGE} users={fakeUsers} />
-    );
-    baseElement = utils.baseElement;
-  });
-
-  it("should render props message if there is no user in the lislt", () => {
-    const errorMessage = screen.queryByText(FAKE_EMPTY_MESSAGE);
-
-    expect(errorMessage).toBeTruthy();
-  });
-})
+//   beforeEach(() => {
+//     const utils = render(
+//       <UserList users={fakeUsers} />
+//     );
+//     baseElement = utils.baseElement;
+//   });
+// })

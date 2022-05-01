@@ -4,11 +4,10 @@ import styles from "./user.module.scss";
 
 type Props = {
   users: UserT[];
-  emptyMessage: string;
 };
 
 const UserList = (props: Props) => {
-  const { users, emptyMessage } = props;
+  const { users } = props;
 
   const getUserElements = (users: Array<UserT>) =>
     users.map((user) => (
@@ -24,11 +23,7 @@ const UserList = (props: Props) => {
   return (
     <div className={styles.wrapper} data-testid="wrapper">
       <ul>
-        {users && users.length > 0 ? (
-          getUserElements(users)
-        ) : (
-          <p>{emptyMessage}</p>
-        )}
+        {users && users.length > 0 && getUserElements(users)}
       </ul>
     </div>
   );

@@ -1,13 +1,22 @@
-import { render, cleanup, screen, fireEvent } from "@testing-library/react";
+import { render, cleanup, screen, fireEvent,waitFor } from "@testing-library/react";
+import axios from "axios";
+import { act } from "react-dom/test-utils";
 import Home from ".";
+import { usersResponse } from "../../mocks/users-response";
+import { UsersProvider } from "../../store/context/UsersContext";
+
+jest.useFakeTimers();
+
+jest.mock("axios")
 
 describe("User", () => {
   let baseElement: HTMLElement;
+  const mockedAxios = axios as jest.Mocked<typeof axios>;
 
   afterEach(cleanup);
 
   beforeEach(() => {
-    const utils = render(<Home />);
+    const utils = render(<UsersProvider><Home /></UsersProvider>);
     baseElement = utils.baseElement;
   });
 
@@ -20,11 +29,17 @@ describe("User", () => {
     expect(searchBox).toBeTruthy();
   });
 
-  it("should display a list of users if login is search and a positive response is received", () => {
+  it("should display a list of users if login is search and a positive response is received", async () => {
+    mockedAxios.get.mockResolvedValue({data: usersResponse});
+
     const searchBox = (screen.getByRole('textbox'))
     const fakeValue = 'bbc'
-    fireEvent.change(searchBox, {target: {value: fakeValue}})
+    
+    act(() => {
+      fireEvent.change(searchBox, {target: {value: fakeValue}})
+      jest.advanceTimersByTime(500);
+    });
 
-    expect(screen.getByRole('list')).toBeTruthy()
+    await waitFor(() => expect(screen.getByRole('list')).toBeTruthy())
   });
 });

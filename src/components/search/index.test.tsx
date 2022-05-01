@@ -51,6 +51,6 @@ describe("Search", () => {
     fireEvent.change(input, {target: {value: fakeValue}})
     jest.advanceTimersByTime(500);
 
-    expect(mockOnChangeCallBack).toHaveBeenCalledTimes(1)
+    expect(mockOnChangeCallBack).toHaveBeenCalledTimes(1) //working in the app. I need to find out this is failing in RTL
   });
 });
