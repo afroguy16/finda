@@ -1,8 +1,11 @@
+import { UsersProvider } from "./store/context/UsersContext";
+import Home from "./views/home";
+
 function App() {
   return (
-    <div className="App">
-      <p>Welcome</p>
-    </div>
+    <UsersProvider>
+      <Home />
+    </UsersProvider>
   );
 }
 

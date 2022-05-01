@@ -1,0 +1,34 @@
+@import '../../variables.scss';
+
+.wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.input {
+    border-radius: 40px;
+    padding: 24px 27px;
+    background-color: $gray;
+    border: none;
+    font-size: $baseFontSize;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.loader {
+    border: 3px solid $lightGray;
+    border-top: 3px solid $blue;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+    position: absolute;
+    right: 24px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
