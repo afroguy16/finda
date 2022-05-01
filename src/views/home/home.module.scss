@@ -5,8 +5,14 @@
 .search {
     display: flex;
     justify-content: center;
+    margin-bottom: 53px;
     & > * {
         width: 35%;
         min-width: 300px;
     }
+}
+
+.user_list {
+    display: flex;
+    justify-content: center;
 }

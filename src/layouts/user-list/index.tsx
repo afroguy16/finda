@@ -1,6 +1,6 @@
 import User from "../../components/user";
 import { UserT } from "../../types/user";
-import styles from "./user.module.scss";
+import styles from "./user-list.module.scss";
 
 type Props = {
   users: UserT[];
@@ -21,11 +21,9 @@ const UserList = (props: Props) => {
     ));
 
   return (
-    <div className={styles.wrapper} data-testid="wrapper">
-      <ul>
+      <ul className={styles.wrapper} data-testid="wrapper">
         {users && users.length > 0 && getUserElements(users)}
       </ul>
-    </div>
   );
 };
 

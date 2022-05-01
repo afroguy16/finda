@@ -50,7 +50,7 @@ const Home = () => {
         </div>
       )}
       {!hasUsers() && initSearch && (
-        <div className={styles.user_list}>
+        <div className={styles.no_user_list}>
           <p>No user found, please try another search</p>
         </div>
       )}

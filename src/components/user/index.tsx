@@ -12,7 +12,7 @@ const User = (props: Props) => {
         <img src={avatar_url} alt={`${login}'s image'`} />
       </div>
       <div className={styles.info}>
-        <p>{login}</p>
+        <p>@{login}</p>
         <p>{type}</p>
       </div>
     </div>
