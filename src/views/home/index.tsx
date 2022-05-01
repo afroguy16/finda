@@ -11,7 +11,7 @@ const SEARCH_PLACEHOLDER = "Enter a username to start searching...";
 const Home = () => {
   const { fetchUsers } = useFetchUsers();
   const [fetchingUsers, setFetchingUsers] = useState(false);
-  const { items: users } = useUsers();
+  const { items: users, total_count } = useUsers();
   const [initSearch, setInitSearch] = useState(false)
 
   const onFetchUsers = async (query: string) => {
@@ -45,8 +45,13 @@ const Home = () => {
         />
       </div>
       {hasUsers() && (
-        <div className={styles.user_list}>
-          <UserList users={users} />
+        <div className={styles.users_found}>
+          <div className={styles.count}>
+            <p data-testid="total_count">{total_count} users found</p>
+          </div>
+          <div className={styles.user_list}>
+            <UserList users={users} />
+          </div>
         </div>
       )}
       {!hasUsers() && initSearch && (

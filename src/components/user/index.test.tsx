@@ -25,7 +25,7 @@ describe("User", () => {
   });
 
   it("should render with props details id, avatar_url and type", () => {
-    const loginParagraph = screen.queryByText(fakeUser.login);
+    const loginParagraph = screen.queryByText(`@${fakeUser.login}`);
     const typeParagraph = screen.queryByText(fakeUser.type);
     const image = screen.getByRole("img");
 
