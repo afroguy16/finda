@@ -12,18 +12,20 @@ const UserList = (props: Props) => {
   const getUserElements = (users: Array<UserT>) =>
     users.map((user) => (
       <li key={user.id}>
-        <User
-          login={user.login}
-          type={user.type}
-          avatar_url={user.avatar_url}
-        />
+        <a href={`https://github.com/${user.login}`} target="_blank">
+          <User
+            login={user.login}
+            type={user.type}
+            avatar_url={user.avatar_url}
+          />
+        </a>
       </li>
     ));
 
   return (
-      <ul className={styles.wrapper} data-testid="wrapper">
-        {users && users.length > 0 && getUserElements(users)}
-      </ul>
+    <ul className={styles.wrapper} data-testid="wrapper">
+      {users && users.length > 0 && getUserElements(users)}
+    </ul>
   );
 };
 
