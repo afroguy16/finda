@@ -27,16 +27,30 @@ describe("Search", () => {
 
     jest.advanceTimersByTime(500);
 
-    expect(mockOnChangeCallBack).toHaveBeenCalled()
     expect(mockOnChangeCallBack).toHaveBeenCalledWith(fakeValue)
   });
 
   it("should not trigger onChange after 500ms if value is empty", () => {
+    const fakeValue = ''
     const input = screen.getByRole('textbox')
-    fireEvent.change(input, {target: {value: ''}})
+    fireEvent.change(input, {target: {value: fakeValue}})
 
     jest.advanceTimersByTime(500);
 
     expect(mockOnChangeCallBack).not.toHaveBeenCalled()
+  });
+
+  it("should not trigger onChange after 500ms if the new value and the previous value is the same", () => {
+    const fakeValue = 'bbc'
+    const input = screen.getByRole('textbox')
+    fireEvent.change(input, {target: {value: fakeValue}})
+
+    jest.advanceTimersByTime(500);
+    expect(mockOnChangeCallBack).toHaveBeenCalledWith(fakeValue)
+
+    fireEvent.change(input, {target: {value: fakeValue}})
+    jest.advanceTimersByTime(500);
+
+    expect(mockOnChangeCallBack).toHaveBeenCalledTimes(1)
   });
 });

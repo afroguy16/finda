@@ -1,27 +1,38 @@
 import { useEffect } from "react";
-import { debounceTime, Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged, Subject } from "rxjs";
 
 type Props = {
   onChange: (newValue: string) => void;
 };
 
+const DELAY_INPUT_CHANGE = 500
+
 const Search = ({ onChange }: Props) => {
-  const changeHandler: Subject<string> = new Subject();
+  const searchValue$: Subject<string> = new Subject();
 
   useEffect(() => {
-    changeHandler
+    subscribeToSearchValueChange();
+    return () => {
+      searchValue$.complete();
+    };
+  });
+
+  const subscribeToSearchValueChange = () => {
+    searchValue$
       .asObservable()
-      .pipe(
-        debounceTime(500)
-      )
+      .pipe(debounceTime(DELAY_INPUT_CHANGE), distinctUntilChanged())
       .subscribe((value) => {
         value && onChange(value);
       });
-  });
+  };
+
+  const emitNewSearchValue = (newValue: string) => {
+    searchValue$.next(newValue);
+  };
 
   return (
     <div>
-      <input type="text" onChange={(e) => changeHandler.next(e.target.value)} />
+      <input type="text" onChange={(e) => emitNewSearchValue(e.target.value)} />
     </div>
   );
 };
