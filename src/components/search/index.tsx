@@ -1,42 +1,52 @@
-import { useEffect } from "react"
-import { debounceTime, distinctUntilChanged, Subject } from "rxjs"
+import { useEffect, useState } from "react";
+import { debounceTime, distinctUntilChanged, takeWhile } from "rxjs";
+import { createSignal } from "@react-rxjs/utils";
 
-import styles from './search.module.scss'
+import styles from "./search.module.scss";
 
 type Props = {
   onChange: (newValue: string) => void;
   placeholder?: string;
+  loading?: boolean;
 };
 
 const DELAY_INPUT_CHANGE = 500;
 
-const Search = ({ onChange, placeholder }: Props) => {
-  const searchValue$: Subject<string> = new Subject();
+const [searchValue$, setSearchValue] = createSignal<any>();
 
+const Search = ({ onChange, placeholder, loading }: Props) => {
+  const [alive, setAlive] = useState(true);
   useEffect(() => {
-    subscribeToSearchValueChange(); //unsubscribing not need since it won't emit new event if there is no value changes
+    subscribeToSearchValueChange();
+    return () => setAlive(false);
   }, []);
 
   const subscribeToSearchValueChange = () => {
     searchValue$
-      .asObservable()
-      .pipe(debounceTime(DELAY_INPUT_CHANGE), distinctUntilChanged())
+      .pipe(
+        debounceTime(DELAY_INPUT_CHANGE),
+        distinctUntilChanged(),
+        takeWhile(() => alive)
+      )
       .subscribe((value) => {
         value && onChange(value);
       });
   };
 
   const emitNewSearchValue = (newValue: string) => {
-    searchValue$.next(newValue);
+    setSearchValue(newValue);
   };
 
   return (
-    <input
-      type="text"
-      placeholder={placeholder}
-      className={styles.wrapper}
-      onChange={(e) => emitNewSearchValue(e.target.value)}
-    />
+    <div className={styles.wrapper}>
+      <input
+        type="text"
+        placeholder={placeholder}
+        className={styles.input}
+        onChange={(e) => emitNewSearchValue(e.target.value)}
+      />
+      {loading && <div className={styles.loader}></div>}
+    </div>
   );
 };
 
