@@ -40,7 +40,7 @@ describe("User", () => {
       jest.advanceTimersByTime(500);
     });
 
-    await waitFor(() => expect(screen.getByRole('list')).toBeTruthy())
+    await waitFor(() => expect(screen.getAllByRole('list')).toBeTruthy())
   });
 
   it("should display the number of users found", async () => {
