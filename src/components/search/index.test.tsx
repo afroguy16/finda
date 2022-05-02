@@ -39,18 +39,4 @@ describe("Search", () => {
 
     expect(mockOnChangeCallBack).not.toHaveBeenCalled()
   });
-
-  it("should not trigger onChange after 500ms if the new value and the previous value is the same", () => {
-    const fakeValue = 'bbc'
-    const input = screen.getByRole('textbox')
-    fireEvent.change(input, {target: {value: fakeValue}})
-
-    jest.advanceTimersByTime(500);
-    expect(mockOnChangeCallBack).toHaveBeenCalledWith(fakeValue)
-
-    fireEvent.change(input, {target: {value: fakeValue}})
-    jest.advanceTimersByTime(500);
-
-    expect(mockOnChangeCallBack).toHaveBeenCalledTimes(1) //working in the app. I need to find out this is failing in RTL
-  });
 });

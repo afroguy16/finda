@@ -40,6 +40,24 @@ describe("User", () => {
       jest.advanceTimersByTime(500);
     });
 
-    await waitFor(() => expect(screen.getByRole('list')).toBeTruthy())
+    await waitFor(() => expect(screen.getAllByRole('list')).toBeTruthy())
+  });
+
+  it("should display the number of users found", async () => {
+    mockedAxios.get.mockResolvedValue({data: usersResponse});
+
+    const searchBox = (screen.getByRole('textbox'))
+    const fakeValue = 'bbc'
+    const { total_count } = usersResponse
+    
+    act(() => {
+      fireEvent.change(searchBox, {target: {value: fakeValue}})
+      jest.advanceTimersByTime(500);
+    });
+
+    await waitFor(() => {
+      const countElement = screen.getByTestId('total_count')
+      expect(countElement.innerHTML).toContain(total_count.toString())
+    })
   });
 });

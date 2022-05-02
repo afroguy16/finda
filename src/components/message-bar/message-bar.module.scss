@@ -1,0 +1,43 @@
+@import "../../variables.scss";
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background-color: $danger;
+  color: $white;
+  text-align: center;
+  padding: 20px;
+  transition: 0.5s;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  right: 100px;
+  cursor: pointer;
+  :hover {
+    background: $gray;
+    color: $darkGray;
+  }
+
+  button {
+    background: $darkGray;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    margin: 0;
+    width: 30px;
+    height: 30px;
+    background: $darkGray;
+    border-radius: 50%;
+  }
+}

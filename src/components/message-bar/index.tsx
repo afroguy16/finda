@@ -1,3 +1,4 @@
+import ReactDOM from "react-dom";
 import { ReactNode } from "react";
 import styles from "./message-bar.module.scss";
 
@@ -7,17 +8,19 @@ type Props = {
 };
 
 const MessageBar = ({ children, onClose }: Props) => {
-  return (
+  return ReactDOM.createPortal(
     <>
-      <div>
-        <button
-          className={styles.button}
-          data-testid="close-button"
-          onClick={() => onClose()}
-        ></button>
+      <div className={styles.wrapper}>
+        <div className={styles.button}>
+          <button
+            data-testid="close-button"
+            onClick={() => onClose()}
+          >x</button>
+        </div>
+        <div>{children}</div>
       </div>
-      <div>{children}</div>
-    </>
+    </>,
+    document.getElementById('portal') as HTMLElement
   );
 };
 

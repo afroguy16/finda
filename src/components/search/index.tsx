@@ -29,7 +29,6 @@ const Search = ({ onChange, placeholder, loading }: Props) => {
         takeWhile(() => alive)
       )
       .subscribe((value) => {
-        console.log('called')
         value && onChange(value);
       });
   };

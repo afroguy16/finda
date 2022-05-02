@@ -11,3 +11,9 @@ Setup is easy, you will be up and running in a couple of steps
 ## Testing
 I attempted to build with TDD (Test driven development), and have as much test coverage as quickly as possible. 
 To test the application, in your terminal, run `npm test`
+
+## Aditional Features
+I used the modern search feature where the request is sent automatically after some delayed typing from the user, as opposed to submit button, it helps the user experience
+
+## Know Issue
+Two failing test, one in the Pagination and the Other in the Search component, a branch has been created to address these issues
