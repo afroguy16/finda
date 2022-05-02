@@ -9,7 +9,7 @@ const User = (props: Props) => {
   return (
     <div className={styles.wrapper} data-testid="wrapper">
       <div className={styles.avatar}>
-        <img src={avatar_url} alt={`${login}'s image'`} />
+        <img src={avatar_url} alt={`${login}'s avatar'`} />
       </div>
       <div className={styles.info}>
         <p>@{login}</p>
