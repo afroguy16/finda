@@ -95,11 +95,11 @@ const Home = () => {
           </div>
         )}
       </div>
-      {error && (
+      {error ? (
         <MessageBar onClose={() => setError("")}>
           <p>{error}</p>
         </MessageBar>
-      )}
+      ): null}
     </>
   );
 };
