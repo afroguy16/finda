@@ -14,6 +14,12 @@ describe("MessageBar", () => {
   afterEach(cleanup);
 
   beforeEach(() => {
+    const root = document.createElement('div');
+    root.setAttribute("id", "portal");
+    document.body.appendChild(root);
+  })
+
+  beforeEach(() => {
     mockOnCloseCallBack = jest.fn()
     const utils = render(<MessageBar onClose={() => mockOnCloseCallBack()}>{fakeMessageBarChildElement}</MessageBar>);
     baseElement = utils.baseElement;
