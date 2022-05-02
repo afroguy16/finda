@@ -7,46 +7,51 @@ import { useFetchUsers } from "../../hooks/fetch-users";
 import UserList from "../../layouts/user-list";
 import useUsers from "../../store/context/UsersContext";
 import styles from "./home.module.scss";
+import MessageBar from "../../components/message-bar";
 
-const SEARCH_PLACEHOLDER = "Enter a username to start searching..."
-const DEFAULT_PAGE_NUMBER = '1'
-const PAGE_RANGE = 5
-const GITHUB_SEARCH_RESULT_ALLOWED = 1000
-const USER_PAGE_DISPLAY = 9 //according to the assignment doc
+const SEARCH_PLACEHOLDER = "Enter a username to start searching...";
+const DEFAULT_PAGE_NUMBER = "1";
+const PAGE_RANGE = 5;
+const GITHUB_SEARCH_RESULT_ALLOWED = 1000;
+const USER_PAGE_DISPLAY = 9; //according to the assignment doc
+const CUSTOM_ERROR_MESSAGE = "Something went wrong";
 
 const Home = () => {
   const { fetchUsers } = useFetchUsers();
   const [fetchingUsers, setFetchingUsers] = useState(false);
   const { items: users, total_count } = useUsers();
   const [initSearch, setInitSearch] = useState(false);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
+  const [error, setError] = useState("");
 
   const hasUsers = () => users.length > 0;
 
   const getAvailablePageRange = (): number => {
-    return total_count < GITHUB_SEARCH_RESULT_ALLOWED ? total_count : GITHUB_SEARCH_RESULT_ALLOWED;
-  }
+    return total_count < GITHUB_SEARCH_RESULT_ALLOWED
+      ? total_count
+      : GITHUB_SEARCH_RESULT_ALLOWED;
+  };
 
   const onFetchUsers = async (newQuery?: string, pageNumber?: string) => {
-    if(!query && !newQuery) return
+    setError("");
+    if (!query && !newQuery) return;
 
-    newQuery && setQuery(newQuery)
+    newQuery && setQuery(newQuery);
     setFetchingUsers(true);
-    
-    try {
-      const pageNumberToSend = pageNumber ? pageNumber : DEFAULT_PAGE_NUMBER
-      const queryToSend = newQuery ? newQuery : query
 
-      const usersResult = await fetchUsers(queryToSend, pageNumberToSend);
-      
-      console.log(usersResult);
+    try {
+      const pageNumberToSend = pageNumber ? pageNumber : DEFAULT_PAGE_NUMBER;
+      const queryToSend = newQuery ? newQuery : query;
+
+      await fetchUsers(queryToSend, pageNumberToSend);
       !initSearch && setInitSearch(true);
+
     } catch (e) {
       const err = e as AxiosError;
       if (err.message) {
-        console.log(err.message);
+        setError(err.message);
       } else {
-        console.log("something went wrong");
+        setError(CUSTOM_ERROR_MESSAGE);
       }
     } finally {
       setFetchingUsers(false);
@@ -54,37 +59,48 @@ const Home = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.search}>
-        <Search
-          placeholder={SEARCH_PLACEHOLDER}
-          onChange={(query) => onFetchUsers(query)}
-          loading={fetchingUsers}
-        />
+    <>
+      <div className={styles.wrapper}>
+        <div className={styles.search}>
+          <Search
+            placeholder={SEARCH_PLACEHOLDER}
+            onChange={(query) => onFetchUsers(query)}
+            loading={fetchingUsers}
+          />
+        </div>
+        {hasUsers() && (
+          <div className={styles.users_found}>
+            <div className={styles.count}>
+              <p data-testid="total_count">{total_count} users found</p>
+            </div>
+            <div className={styles.user_list}>
+              <UserList users={users} />
+            </div>
+            <div className={styles.pagination}>
+              {total_count > USER_PAGE_DISPLAY && <Pagination
+                pageCount={Math.round(
+                  getAvailablePageRange() / USER_PAGE_DISPLAY
+                )}
+                pageRangeDisplayed={PAGE_RANGE}
+                onSelectPage={(pageNumber) =>
+                  onFetchUsers(undefined, pageNumber.toString())
+                }
+              />}
+            </div>
+          </div>
+        )}
+        {!hasUsers() && initSearch && (
+          <div className={styles.no_user_list}>
+            <p>No user found, please try another search</p>
+          </div>
+        )}
       </div>
-      {hasUsers() && (
-        <div className={styles.users_found}>
-          <div className={styles.count}>
-            <p data-testid="total_count">{total_count} users found</p>
-          </div>
-          <div className={styles.user_list}>
-            <UserList users={users} />
-          </div>
-          <div className={styles.pagination}>
-            <Pagination
-              pageCount={Math.round(getAvailablePageRange()/USER_PAGE_DISPLAY)}
-              pageRangeDisplayed={PAGE_RANGE}
-              onSelectPage={(pageNumber) => onFetchUsers(undefined, pageNumber.toString())}
-            />
-          </div>
-        </div>
+      {error && (
+        <MessageBar onClose={() => setError("")}>
+          <p>{error}</p>
+        </MessageBar>
       )}
-      {!hasUsers() && initSearch && (
-        <div className={styles.no_user_list}>
-          <p>No user found, please try another search</p>
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 
