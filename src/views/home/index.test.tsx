@@ -57,7 +57,6 @@ describe("User", () => {
 
     await waitFor(() => {
       const countElement = screen.getByTestId('total_count')
-      console.log(total_count)
       expect(countElement.innerHTML).toContain(total_count.toString())
     })
   });

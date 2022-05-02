@@ -18,7 +18,6 @@ function useFetchUsers(): FetchUsers {
       try {
         const results = (await fetchUsersCall).data;
         updateUsers(results);
-        console.log(results)
         resolve(true);
       } catch (e) {
         reject(e);
