@@ -19,7 +19,7 @@ const Search = ({ onChange, placeholder, loading }: Props) => {
   useEffect(() => {
     subscribeToSearchValueChange();
     return () => setAlive(false);
-  });
+  }, []);
 
   const subscribeToSearchValueChange = () => {
     searchValue$
