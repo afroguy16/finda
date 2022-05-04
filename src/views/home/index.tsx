@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Search from "../../components/search";
 import Pagination from "../../components/pagination";
@@ -8,9 +8,7 @@ import UserList from "../../layouts/user-list";
 import useUsers from "../../store/context/UsersContext";
 import styles from "./home.module.scss";
 import MessageBar from "../../components/message-bar";
-import { SortByT } from "../../store/types/SortUsers";
 import TextButton from "../../components/text-button";
-import { SortByE, SortTypeE } from "../../store/enums/Sort";
 
 const SEARCH_PLACEHOLDER = "Enter a username to start searching...";
 const DEFAULT_PAGE_NUMBER = "1";
@@ -21,15 +19,12 @@ const CUSTOM_ERROR_MESSAGE = "Something went wrong";
 
 const Home = () => {
   const { fetchUsers } = useFetchUsers();
-  const { items: users, total_count, sortUsers } = useUsers();
+  const { items: users, total_count } = useUsers();
   const [initSearch, setInitSearch] = useState(false);
   const [fetchingUsers, setFetchingUsers] = useState(false);
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
-  const [loginSortType, setLoginSortType] = useState<SortTypeE>(SortTypeE.ASC);
-  const [sortByAsc, setSortByAsc] = useState(true)
-
-  useEffect(() => {}, [sortByAsc])
+  const [isSortedByAsc, setIsSortedByAsc] = useState(true);
 
   const hasUsers = () => users.length > 0;
 
@@ -39,11 +34,7 @@ const Home = () => {
       : GITHUB_SEARCH_RESULT_ALLOWED;
   };
 
-  const onFetchUsers = async (
-    newQuery?: string,
-    pageNumber?: string,
-    sortBy?: SortByT
-  ) => {
+  const onFetchUsers = async (newQuery?: string, pageNumber?: string) => {
     setError("");
     if (!query && !newQuery) return;
 
@@ -68,16 +59,7 @@ const Home = () => {
     }
   };
 
-  const onSortUsers = () => {
-    // setLoginSortType(SortTypeE.ASC ? SortTypeE.DES : SortTypeE.ASC);
-    // const payload: SortByT = {
-    //   name: SortByE.LOGIN,
-    //   type: loginSortType,
-    // };
-    // sortUsers(payload);
-    setSortByAsc(oldValue => !oldValue)
-    console.log(sortByAsc)
-  };
+  const onSortUsers = () => setIsSortedByAsc((oldValue) => !oldValue);
 
   return (
     <>
@@ -96,7 +78,7 @@ const Home = () => {
               <TextButton text="Sort by login" onClick={onSortUsers} />
             </div>
             <div className={styles.user_list}>
-              <UserList users={users} sorted={sortByAsc} />
+              <UserList users={isSortedByAsc ? users : [...users].reverse()} />
             </div>
             <div className={styles.pagination}>
               {total_count > USER_PAGE_DISPLAY && (
@@ -115,7 +97,7 @@ const Home = () => {
         )}
         {!hasUsers() && initSearch && (
           <div className={styles.no_user_list}>
-            <p>No user found, please try another search</p>
+            <p>No user found, please try another search 😞</p>
           </div>
         )}
       </div>
