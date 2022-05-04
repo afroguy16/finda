@@ -4,13 +4,15 @@ import styles from "./user-list.module.scss";
 
 type Props = {
   users: UserT[];
+  sorted?: boolean
 };
 
 const UserList = (props: Props) => {
-  const { users } = props;
+  const { users, sorted } = props;
 
-  const getUserElements = (users: Array<UserT>) =>
-    users.map((user) => (
+  const getUserElements = (users: Array<UserT>) => {
+    const sortedUsers = sorted ? [...users] : [...users].reverse()
+    return sortedUsers.map((user) => (
       <li key={user.id}>
         <a href={`https://github.com/${user.login}`} target="_blank" rel="noreferrer">
           <User
@@ -20,7 +22,8 @@ const UserList = (props: Props) => {
           />
         </a>
       </li>
-    ));
+    ))
+  };
 
   return (
     <ul className={styles.wrapper} data-testid="wrapper">

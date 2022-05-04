@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Search from "../../components/search";
 import Pagination from "../../components/pagination";
@@ -27,6 +27,9 @@ const Home = () => {
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
   const [loginSortType, setLoginSortType] = useState<SortTypeE>(SortTypeE.ASC);
+  const [sortByAsc, setSortByAsc] = useState(true)
+
+  useEffect(() => {}, [sortByAsc])
 
   const hasUsers = () => users.length > 0;
 
@@ -51,7 +54,7 @@ const Home = () => {
       const pageNumberToSend = pageNumber ? pageNumber : DEFAULT_PAGE_NUMBER;
       const queryToSend = newQuery ? newQuery : query;
 
-      await fetchUsers(queryToSend, pageNumberToSend, sortBy);
+      await fetchUsers(queryToSend, pageNumberToSend);
       !initSearch && setInitSearch(true);
     } catch (e) {
       const err = e as AxiosError;
@@ -66,12 +69,14 @@ const Home = () => {
   };
 
   const onSortUsers = () => {
-    setLoginSortType(SortTypeE.ASC ? SortTypeE.DES : SortTypeE.ASC);
-    const payload: SortByT = {
-      name: SortByE.LOGIN,
-      type: loginSortType,
-    };
-    sortUsers(payload);
+    // setLoginSortType(SortTypeE.ASC ? SortTypeE.DES : SortTypeE.ASC);
+    // const payload: SortByT = {
+    //   name: SortByE.LOGIN,
+    //   type: loginSortType,
+    // };
+    // sortUsers(payload);
+    setSortByAsc(oldValue => !oldValue)
+    console.log(sortByAsc)
   };
 
   return (
@@ -91,7 +96,7 @@ const Home = () => {
               <TextButton text="Sort by login" onClick={onSortUsers} />
             </div>
             <div className={styles.user_list}>
-              <UserList users={users} />
+              <UserList users={users} sorted={sortByAsc} />
             </div>
             <div className={styles.pagination}>
               {total_count > USER_PAGE_DISPLAY && (

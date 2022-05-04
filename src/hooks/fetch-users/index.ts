@@ -19,7 +19,7 @@ function useFetchUsers(): FetchUsers {
       try {
         const results = (await fetchUsersCall).data;
         if(sortBy) {
-          updateUsers(results, sortBy);
+          updateUsers(results);
         } else {
           updateUsers(results);
         }

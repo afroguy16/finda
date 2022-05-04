@@ -15,10 +15,10 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
       type: UsersActionsE.UPDATE_USERS,
       payload: users,
     });
-    if(sortBy) {
-      console.log(sortBy)
-      sortUsers(sortBy)
-    }
+    // if(sortBy) {
+    //   console.log(sortBy)
+    //   sortUsers(sortBy)
+    // }
   };
 
   const sortUsers = (sortValue: SortByT) => {
