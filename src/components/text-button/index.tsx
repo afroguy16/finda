@@ -7,11 +7,13 @@ type Props = {
 
 const TextButton = ({ text, onClick }: Props) => {
   return (
-    <div className={styles.wrapper}>
-      <button data-testid="sort-button" onClick={onClick}>
-        {text}
-      </button>
-    </div>
+    <button
+      className={styles.wrapper}
+      data-testid="sort-button"
+      onClick={onClick}
+    >
+      {text}
+    </button>
   );
 };
 
