@@ -74,7 +74,7 @@ const Home = () => {
         {hasUsers() && (
           <div className={styles.users_found}>
             <div className={styles.top}>
-              <p data-testid="total_count">{total_count} users found</p>
+              <p data-testid="total_count" className={styles.total_count}>{total_count} users found</p>
               <TextButton text="Sort by login" onClick={onSortUsers} />
             </div>
             <div className={styles.user_list}>
