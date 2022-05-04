@@ -16,24 +16,22 @@ const [searchValue$, setSearchValue] = createSignal<any>();
 
 const Search = ({ onChange, placeholder, loading }: Props) => {
   const [alive, setAlive] = useState(true);
-
   useEffect(() => {
-    const subscribeToSearchValueChange = () => {
-      searchValue$
-        .pipe(
-          debounceTime(DELAY_INPUT_CHANGE),
-          distinctUntilChanged(),
-          takeWhile(() => alive)
-        )
-        .subscribe((value) => {
-          value && onChange(value);
-        });
-    };
-
     subscribeToSearchValueChange();
-
     return () => setAlive(false);
   }, []);
+
+  const subscribeToSearchValueChange = () => {
+    searchValue$
+      .pipe(
+        debounceTime(DELAY_INPUT_CHANGE),
+        distinctUntilChanged(),
+        takeWhile(() => alive)
+      )
+      .subscribe((value) => {
+        value && onChange(value);
+      });
+  };
 
   const emitNewSearchValue = (newValue: string) => {
     setSearchValue(newValue);
