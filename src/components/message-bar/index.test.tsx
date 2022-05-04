@@ -37,7 +37,7 @@ describe("MessageBar", () => {
     expect(childElement).toBeInTheDocument();
   });
 
-  it("should should close if close button is clicked", () => {
+  it("should close if close button is clicked", () => {
     const closeButton = screen.getByTestId("close-button");
 
     closeButton.click()

@@ -6,13 +6,15 @@ type Props = {
   users: UserT[];
 };
 
-const UserList = (props: Props) => {
-  const { users } = props;
-
+const UserList = ({ users }: Props) => {
   const getUserElements = (users: Array<UserT>) =>
     users.map((user) => (
       <li key={user.id}>
-        <a href={`https://github.com/${user.login}`} target="_blank" rel="noreferrer">
+        <a
+          href={`https://github.com/${user.login}`}
+          target="_blank"
+          rel="noreferrer"
+        >
           <User
             login={user.login}
             type={user.type}

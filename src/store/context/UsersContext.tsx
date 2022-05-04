@@ -20,7 +20,7 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
     total_count: state.total_count,
     items: state.items,
     incomplete_results: state.incomplete_results,
-    updateUsers,
+    updateUsers
   };
 
   return (
