@@ -15,7 +15,7 @@ const usersReducer = (
   if (type === UsersActionsE.UPDATE_USERS) {
     return {
       ...state,
-      ...(payload as UsersPayloadT),
+      ...payload,
     };
   }
   throw new Error(`No case for ${type} found in usersReducer`); //developers error to help them avoid bugs by not attempting to use an action that doesn't exist
