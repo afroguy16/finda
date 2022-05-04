@@ -1,5 +1,4 @@
-import { MouseEventHandler, ReactNode } from "react";
-import styles from "./message-bar.module.scss";
+import styles from "./text-button.module.scss";
 
 type Props = {
   text: string;
@@ -9,7 +8,7 @@ type Props = {
 const TextButton = ({ text, onClick }: Props) => {
   return (
     <div className={styles.wrapper}>
-      <button data-testid="close-button" onClick={onClick}>
+      <button data-testid="sort-button" onClick={onClick}>
         {text}
       </button>
     </div>

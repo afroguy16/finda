@@ -8,6 +8,9 @@ import UserList from "../../layouts/user-list";
 import useUsers from "../../store/context/UsersContext";
 import styles from "./home.module.scss";
 import MessageBar from "../../components/message-bar";
+import { SortByT } from "../../store/types/SortUsers";
+import TextButton from "../../components/text-button";
+import { SortByE, SortTypeE } from "../../store/enums/Sort";
 
 const SEARCH_PLACEHOLDER = "Enter a username to start searching...";
 const DEFAULT_PAGE_NUMBER = "1";
@@ -18,11 +21,12 @@ const CUSTOM_ERROR_MESSAGE = "Something went wrong";
 
 const Home = () => {
   const { fetchUsers } = useFetchUsers();
-  const [fetchingUsers, setFetchingUsers] = useState(false);
-  const { items: users, total_count } = useUsers();
+  const { items: users, total_count, sortUsers } = useUsers();
   const [initSearch, setInitSearch] = useState(false);
+  const [fetchingUsers, setFetchingUsers] = useState(false);
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
+  const [loginSortType, setLoginSortType] = useState<SortTypeE>(SortTypeE.ASC);
 
   const hasUsers = () => users.length > 0;
 
@@ -32,7 +36,11 @@ const Home = () => {
       : GITHUB_SEARCH_RESULT_ALLOWED;
   };
 
-  const onFetchUsers = async (newQuery?: string, pageNumber?: string) => {
+  const onFetchUsers = async (
+    newQuery?: string,
+    pageNumber?: string,
+    sortBy?: SortByT
+  ) => {
     setError("");
     if (!query && !newQuery) return;
 
@@ -43,9 +51,8 @@ const Home = () => {
       const pageNumberToSend = pageNumber ? pageNumber : DEFAULT_PAGE_NUMBER;
       const queryToSend = newQuery ? newQuery : query;
 
-      await fetchUsers(queryToSend, pageNumberToSend);
+      await fetchUsers(queryToSend, pageNumberToSend, sortBy);
       !initSearch && setInitSearch(true);
-
     } catch (e) {
       const err = e as AxiosError;
       if (err.message) {
@@ -56,6 +63,15 @@ const Home = () => {
     } finally {
       setFetchingUsers(false);
     }
+  };
+
+  const onSortUsers = () => {
+    setLoginSortType(SortTypeE.ASC ? SortTypeE.DES : SortTypeE.ASC);
+    const payload: SortByT = {
+      name: SortByE.LOGIN,
+      type: loginSortType,
+    };
+    sortUsers(payload);
   };
 
   return (
@@ -72,20 +88,23 @@ const Home = () => {
           <div className={styles.users_found}>
             <div className={styles.count}>
               <p data-testid="total_count">{total_count} users found</p>
+              <TextButton text="Sort by login" onClick={onSortUsers} />
             </div>
             <div className={styles.user_list}>
               <UserList users={users} />
             </div>
             <div className={styles.pagination}>
-              {total_count > USER_PAGE_DISPLAY && <Pagination
-                pageCount={Math.round(
-                  getAvailablePageRange() / USER_PAGE_DISPLAY
-                )}
-                pageRangeDisplayed={PAGE_RANGE}
-                onSelectPage={(pageNumber) =>
-                  onFetchUsers(undefined, pageNumber.toString())
-                }
-              />}
+              {total_count > USER_PAGE_DISPLAY && (
+                <Pagination
+                  pageCount={Math.round(
+                    getAvailablePageRange() / USER_PAGE_DISPLAY
+                  )}
+                  pageRangeDisplayed={PAGE_RANGE}
+                  onSelectPage={(pageNumber) =>
+                    onFetchUsers(undefined, pageNumber.toString())
+                  }
+                />
+              )}
             </div>
           </div>
         )}
@@ -99,7 +118,7 @@ const Home = () => {
         <MessageBar onClose={() => setError("")}>
           <p>{error}</p>
         </MessageBar>
-      ): null}
+      ) : null}
     </>
   );
 };
